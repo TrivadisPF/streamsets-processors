@@ -15,36 +15,29 @@
  */
 package com.trivadis.streamsets.pipeline.stage.stage.processor.imagemetadata;
 
-import java.io.*;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
-import com.streamsets.pipeline.api.Processor;
-import com.trivadis.streamsets.pipeline.stage.stage.processor.imagemetadata.config.JobConfig;
-import com.trivadis.streamsets.pipeline.stage.util.FileRefUtil;
-import org.apache.commons.imaging.ImageInfo;
-import org.apache.commons.imaging.ImageReadException;
-import org.apache.commons.imaging.Imaging;
-import org.apache.commons.imaging.common.GenericImageMetadata;
-import org.apache.commons.imaging.common.ImageMetadata;
-import org.apache.commons.imaging.formats.jpeg.JpegImageMetadata;
-import org.apache.commons.imaging.formats.tiff.TiffDirectory;
-import org.apache.commons.imaging.formats.tiff.TiffField;
-import org.apache.commons.imaging.formats.tiff.TiffImageMetadata;
-import org.apache.commons.imaging.formats.tiff.constants.TiffTagConstants;
-import org.apache.commons.imaging.formats.tiff.fieldtypes.FieldType;
-import org.apache.commons.imaging.formats.tiff.taginfos.TagInfo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.streamsets.pipeline.api.Field;
-import com.streamsets.pipeline.api.Record;
-import com.streamsets.pipeline.api.StageException;
+import com.drew.imaging.ImageMetadataReader;
+import com.drew.imaging.ImageProcessingException;
+import com.drew.metadata.Directory;
+import com.drew.metadata.Metadata;
+import com.drew.metadata.Tag;
+import com.drew.metadata.exif.GpsDirectory;
+import com.streamsets.pipeline.api.*;
 import com.streamsets.pipeline.api.base.OnRecordErrorException;
 import com.streamsets.pipeline.api.base.SingleLaneRecordProcessor;
 import com.streamsets.pipeline.api.el.ELEval;
-import com.streamsets.pipeline.api.FileRef;
+import com.trivadis.streamsets.pipeline.stage.stage.processor.imagemetadata.config.JobConfig;
+import com.trivadis.streamsets.pipeline.stage.stage.processor.imagemetadata.config.PropertyNameFormatChooserValues;
+import com.trivadis.streamsets.pipeline.stage.stage.processor.imagemetadata.config.PropertyNameFormatType;
+import com.trivadis.streamsets.pipeline.stage.util.FileRefUtil;
+import com.trivadis.streamsets.pipeline.stage.util.StringUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * This executor is an example and does not actually perform any actions.
@@ -80,40 +73,55 @@ public class ImageMetadataProcessor extends SingleLaneRecordProcessor {
             validateRecord(record);
             // Read from incoming FileRef, write to output file
             try (InputStream is = fileRef.createInputStream(getContext(), InputStream.class)) {
-                final ImageMetadata metadata = Imaging.getMetadata(is, fileName);
+                final Metadata metadata = ImageMetadataReader.readMetadata(is);
 
                 // do something with metadata
                 if (metadata != null) {
-                    if (metadata instanceof JpegImageMetadata) {
-                        final JpegImageMetadata jpegMetadata = (JpegImageMetadata) metadata;
+                    LinkedHashMap<String, Field> directoryMap = new LinkedHashMap<>();
 
-                        LinkedHashMap<String, Field> directoryMap = new LinkedHashMap<>();
 
-                        TiffImageMetadata tiff = jpegMetadata.getExif();
-                        for (TiffDirectory dir : tiff.contents.directories) {
+                    for (Directory directory : metadata.getDirectories()) {
+                        LinkedHashMap<String, Field> fieldMap = new LinkedHashMap<>();
 
-                            LinkedHashMap<String, Field> fieldMap = new LinkedHashMap<>();
-                            for (TiffField field : dir.entries) {
-                                fieldMap.put(field.getTagName(), Field.create(field.getValue().toString()));
-                            }
-                            directoryMap.put(dir.description(), Field.create(fieldMap));
+                        System.out.println(directory.getName());
+
+                        for (Tag tag : directory.getTags()) {
+                            fieldMap.put(transformValueIfNeeded(tag.getTagName()), Field.create(tag.getDescription()));
+
                         }
 
-                        record.set("/metadata", Field.createListMap(directoryMap));
-                        batchMaker.addRecord(record);
+                        if (directory instanceof GpsDirectory) {
+                            GpsDirectory gpsDirectory = (GpsDirectory) directory;
+//                            System.out.println(gpsDirectory.getGeoLocation().getLatitude());
+//                            System.out.println(gpsDirectory.getGeoLocation().getLongitude());
 
-                    } else if (metadata instanceof GenericImageMetadata) {
-                        LOG.info("Image metadata: " + metadata.toString(fileName));
+                            fieldMap.put(transformValueIfNeeded("latitude"), Field.create(gpsDirectory.getGeoLocation().getLatitude()));
+                            fieldMap.put(transformValueIfNeeded("longitude"), Field.create(gpsDirectory.getGeoLocation().getLongitude()));
+                        }
+
+                        directoryMap.put(transformValueIfNeeded(directory.getName()), Field.create(fieldMap));
+
+                        if (directory.hasErrors()) {
+                            for (String error : directory.getErrors()) {
+                                System.err.format("ERROR: %s", error);
+                            }
+                        }
                     }
-                }
 
+                    if (jobConfig.removeWholeFile) {
+                        record.delete("/fileRef");
+                    }
+
+                    record.set(jobConfig.outputField, Field.createListMap(directoryMap));
+                    batchMaker.addRecord(record);
+                }
 
             } catch (IOException e) {
                 LOG.error("IOException", e);
                 throw new OnRecordErrorException(record, Errors.IMAGE_METADATA_02, e.getMessage(), e);
-            } catch (ImageReadException e) {
-                LOG.error("ImageReadException", e);
-                throw new OnRecordErrorException(record, Errors.IMAGE_METADATA_03, e.getMessage(), e);
+            } catch (ImageProcessingException e) {
+                LOG.error("IOException", e);
+                throw new OnRecordErrorException(record, Errors.IMAGE_METADATA_02, e.getMessage(), e);
             }
         } catch(TransformerStageCheckedException ex){
             LOG.error(ex.getMessage(), ex.getParams(), ex);
@@ -121,15 +129,6 @@ public class ImageMetadataProcessor extends SingleLaneRecordProcessor {
         }
     }
 
-    private String getValue(final JpegImageMetadata jpegMetadata,
-                                      final TagInfo tagInfo) {
-        String retValue = null;
-        final TiffField field = jpegMetadata.findEXIFValueWithExactMatch(tagInfo);
-        if (field != null) {
-            FieldType type = field.getFieldType();
-        }
-        return retValue;
-    }
 
     /**
      * Validate the record is a whole file record
@@ -141,6 +140,15 @@ public class ImageMetadataProcessor extends SingleLaneRecordProcessor {
         } catch (IllegalArgumentException e) {
             throw new TransformerStageCheckedException(Errors.IMAGE_METADATA_01, e.toString(), e);
         }
+    }
+
+    private String transformValueIfNeeded(String value) {
+        String transformedValue = value;
+        if (jobConfig.propertyNameFormatType.equals(PropertyNameFormatType.UPPER_CAMEL_CASE)) {
+            transformedValue = StringUtil.toCamelCase(value, true);
+        } else if (jobConfig.propertyNameFormatType.equals(PropertyNameFormatType.LOWER_CAMEL_CASE))
+            transformedValue = StringUtil.toCamelCase(value, false);
+        return transformedValue;
     }
 
 }

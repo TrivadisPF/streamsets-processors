@@ -16,4 +16,39 @@ public class JobConfig {
     )
     @ValueChooserModel(JobTypeChooserValues.class)
     public JobType jobType;
+
+    @ConfigDef(
+            required = true,
+            type = ConfigDef.Type.STRING,
+            defaultValue = "/imageMetadata",
+            label = "Output Field",
+            description = "Use an existing field or a new field. Using an existing field overwrites the original value",
+            group = "JOB",
+            displayPosition = 50
+    )
+    public String outputField = "/imageMetadata";
+
+    @ConfigDef(
+            required = false,
+            type = ConfigDef.Type.MODEL,
+            defaultValue = "ORIGINAL",
+            label = "Property Name Format",
+            description = "How to format the property names?",
+            group = "JOB",
+            displayPosition = 60
+    )
+    @ValueChooserModel(PropertyNameFormatChooserValues.class)
+    public PropertyNameFormatType propertyNameFormatType = PropertyNameFormatType.ORIGINAL;
+
+    @ConfigDef(
+            required = true,
+            type = ConfigDef.Type.BOOLEAN,
+            defaultValue = "false",
+            label = "Remove WholeFile",
+            description = "Should we remove the Whole File after the processor has done its work?",
+            group = "JOB",
+            displayPosition = 70
+    )
+    public boolean removeWholeFile = false;
+
 }

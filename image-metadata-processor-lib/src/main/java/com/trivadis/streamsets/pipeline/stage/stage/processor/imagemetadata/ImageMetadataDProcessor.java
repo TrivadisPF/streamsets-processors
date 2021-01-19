@@ -21,7 +21,7 @@ import com.trivadis.streamsets.pipeline.stage.stage.processor.imagemetadata.conf
 
 @StageDef(
 		  version = 1,
-		  label = "Image Metadata",
+		  label = "Image Metadata Extractor",
 		  description = "Lookup metadata from a image in a whole file.",
 		  execution = { ExecutionMode.STANDALONE },
 		  icon = "image_metadata_processor.png",

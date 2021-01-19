@@ -1,7 +1,6 @@
 package com.trivadis.streamsets.pipeline.stage.util;
 
 import com.google.common.base.Joiner;
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import com.streamsets.pipeline.api.Record;
