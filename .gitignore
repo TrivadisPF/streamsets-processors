@@ -25,3 +25,6 @@ hs_err_pid*
 **/target
 **/.idea
 **/.settings
+carifai-processor-lib/.project
+carifai-processor-lib/.classpath
+carifai-processor-lib/image-metagdata-processor-lib.iml
