@@ -39,4 +39,26 @@ public class JobConfig {
             displayPosition = 60
     )
     public String outputField = "/imageConcepts";
+
+    @ConfigDef(
+            required = true,
+            type = ConfigDef.Type.STRING,
+            defaultValue = "",
+            label = "Clarifai Model ID",
+            description = "bla",
+            group = "JOB",
+            displayPosition = 40
+    )
+    public String clarifaiModelId = "";
+
+    @ConfigDef(
+            required = true,
+            type = ConfigDef.Type.BOOLEAN,
+            defaultValue = "false",
+            label = "Remove WholeFile",
+            description = "Should we remove the Whole File after the processor has done its work?",
+            group = "JOB",
+            displayPosition = 70
+    )
+    public boolean removeWholeFile = false;
 }

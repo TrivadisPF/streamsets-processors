@@ -81,7 +81,7 @@ public class ClarifaiImageRecognitionProcessor extends SingleLaneRecordProcessor
 
                 MultiOutputResponse response = stub.postModelOutputs(
                         PostModelOutputsRequest.newBuilder()
-                                .setModelId("aaa03c23b3724a16a56b629203edc62c")
+                                .setModelId(jobConfig.clarifaiModelId)
                                 .addInputs(
                                         Input.newBuilder().setData(
                                                 Data.newBuilder().setImage(
@@ -101,6 +101,10 @@ public class ClarifaiImageRecognitionProcessor extends SingleLaneRecordProcessor
                 for (Concept c : response.getOutputs(0).getData().getConceptsList()) {
                     System.out.println( String.format("%12s: %,.2f", c.getName(), c.getValue()));
                     conceptMap.put(c.getName(), Field.create(c.getValue()));
+                }
+
+                if (jobConfig.removeWholeFile) {
+                    record.delete("/fileRef");
                 }
 
                 record.set(jobConfig.outputField, Field.createListMap(conceptMap));
