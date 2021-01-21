@@ -94,9 +94,10 @@ public class ImageMetadataProcessor extends SingleLaneRecordProcessor {
                             GpsDirectory gpsDirectory = (GpsDirectory) directory;
 //                            System.out.println(gpsDirectory.getGeoLocation().getLatitude());
 //                            System.out.println(gpsDirectory.getGeoLocation().getLongitude());
-
-                            fieldMap.put(transformValueIfNeeded("latitude"), Field.create(gpsDirectory.getGeoLocation().getLatitude()));
-                            fieldMap.put(transformValueIfNeeded("longitude"), Field.create(gpsDirectory.getGeoLocation().getLongitude()));
+                            if (gpsDirectory != null && gpsDirectory.getGeoLocation() != null) {
+                                fieldMap.put(transformValueIfNeeded("latitude"), Field.create(gpsDirectory.getGeoLocation().getLatitude()));
+                                fieldMap.put(transformValueIfNeeded("longitude"), Field.create(gpsDirectory.getGeoLocation().getLongitude()));
+                            }
                         }
 
                         directoryMap.put(transformValueIfNeeded(directory.getName()), Field.create(fieldMap));
