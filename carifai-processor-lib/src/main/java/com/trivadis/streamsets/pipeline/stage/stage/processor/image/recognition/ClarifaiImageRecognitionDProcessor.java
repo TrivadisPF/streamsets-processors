@@ -22,7 +22,7 @@ import com.trivadis.streamsets.pipeline.stage.stage.processor.image.recognition.
 @StageDef(
 		  version = 1,
 		  label = "Clarifai Image Recognition",
-		  description = "Use the Clarifai Image Rekognition API",
+		  description = "Use the Clarifai Image Recognition API",
 		  execution = { ExecutionMode.STANDALONE },
 		  icon = "image_recognition_processor.png",
 		  onlineHelpRefUrl =""
