@@ -10,24 +10,13 @@ public class JobConfig {
             type = ConfigDef.Type.MODEL,
             label = "Job Type",
             description = "Type of job that will be executed.",
-            defaultValue = "PREDICT_CONCEP",
+            defaultValue = "CREATE_THUMBNAIL",
             displayPosition = 10,
             displayMode = ConfigDef.DisplayMode.BASIC,
             group = "JOB"
     )
     @ValueChooserModel(JobTypeChooserValues.class)
     public JobType jobType;
-
-    @ConfigDef(
-            required = true,
-            type = ConfigDef.Type.CREDENTIAL,
-            defaultValue = "",
-            label = "Clarifai API Key",
-            description = "The Clarifai API key",
-            group = "JOB",
-            displayPosition = 50
-    )
-    public CredentialValue clarifaiApiKey;
 
     @ConfigDef(
             required = true,
@@ -38,42 +27,68 @@ public class JobConfig {
             group = "JOB",
             displayPosition = 60
     )
-    public String outputField = "/concepts";
+    public String outputField = "/thumbnail";
 
     @ConfigDef(
             required = true,
-            type = ConfigDef.Type.STRING,
-            defaultValue = "",
-            label = "Clarifai Model ID",
-            description = "ID for pre-created or custom Clarifai model",
+            type = ConfigDef.Type.NUMBER,
+            defaultValue = "160",
+            label = "Width",
+            description = "The Width of the thumbnail",
             group = "JOB",
-            displayPosition = 40
+            displayPosition = 70,
+            displayMode = ConfigDef.DisplayMode.ADVANCED
     )
-    public String clarifaiModelId = "";
+    public Integer width = 160;
 
     @ConfigDef(
-            required = false,
+            required = true,
+            type = ConfigDef.Type.NUMBER,
+            defaultValue = "160",
+            label = "Height",
+            description = "The Height of the thumbnail",
+            group = "JOB",
+            displayPosition = 75,
+            displayMode = ConfigDef.DisplayMode.ADVANCED
+    )
+    public Integer height = 160;
+
+    @ConfigDef(
+            required = true,
             type = ConfigDef.Type.NUMBER,
             defaultValue = "0",
-            label = "Minimum probability threshold (%)",
-            description = "Equal and higher value for concept prediction will be returned",
+            label = "Rotate",
+            description = "the degree by which the thumbnail should be rotated.",
             group = "JOB",
-            displayPosition = 50,
+            displayPosition = 80,
             displayMode = ConfigDef.DisplayMode.ADVANCED
     )
-    public Integer predictionInPercentageGreaterEqual = 0;
+    public Integer rotate = 0;
 
     @ConfigDef(
-            required = false,
+            required = true,
             type = ConfigDef.Type.NUMBER,
-            defaultValue = "20",
-            label = "Number of concepts returned",
-            description = "Number of concepts to return",
+            defaultValue = "100",
+            label = "Output Quality (%)",
+            description = "A value from 0 to 100 which indicates the quality setting to use for the compression of the thumbnail. 0 indicates the lowest quality, 100 indicates the highest quality.",
             group = "JOB",
-            displayPosition = 60,
+            displayPosition = 85,
             displayMode = ConfigDef.DisplayMode.ADVANCED
     )
-    public Integer maxConcepts = 20;
+    public Integer quality = 100;
+
+    @ConfigDef(
+            required = true,
+            type = ConfigDef.Type.MODEL,
+            label = "Thumbnail Format",
+            description = "Format of the thumbnail.",
+            defaultValue = "PNG",
+            displayPosition = 90,
+            displayMode = ConfigDef.DisplayMode.ADVANCED,
+            group = "JOB"
+    )
+    @ValueChooserModel(ThumbnailFormatChooserValues.class)
+    public ThumbnailFormat thumbnailFormat;
 
     @ConfigDef(
             required = true,
@@ -82,7 +97,7 @@ public class JobConfig {
             label = "Remove WholeFile",
             description = "Should we remove the Whole File after the processor has done its work?",
             group = "JOB",
-            displayPosition = 70,
+            displayPosition = 100,
             displayMode = ConfigDef.DisplayMode.ADVANCED
     )
     public boolean removeWholeFile = false;
