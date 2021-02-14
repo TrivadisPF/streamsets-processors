@@ -28,3 +28,10 @@ hs_err_pid*
 carifai-processor-lib/.project
 carifai-processor-lib/.classpath
 carifai-processor-lib/image-metagdata-processor-lib.iml
+thumbnails-processor-lib/thumbnail-processor-lib.iml
+thumbnails-processor-lib/src/main/assemblies/stage-lib.xml
+thumbnails-processor-lib/src/main/.DS_Store
+thumbnails-processor-lib/.DS_Store
+image-metadata-processor-lib/.DS_Store
+carifai-processor-lib/.DS_Store
+carifai-processor-lib/.DS_Store
