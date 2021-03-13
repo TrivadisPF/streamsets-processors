@@ -1,4 +1,4 @@
-package com.trivadis.streamsets.pipeline.stage.stage.processor.image.recognition.config;
+package com.trivadis.streamsets.pipeline.stage.stage.processor.image.thumbnailer.config;
 
 import com.streamsets.pipeline.api.base.BaseEnumChooserValues;
 

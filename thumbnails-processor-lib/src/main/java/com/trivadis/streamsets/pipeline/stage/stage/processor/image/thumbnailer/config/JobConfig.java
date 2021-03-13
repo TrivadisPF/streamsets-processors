@@ -1,8 +1,7 @@
-package com.trivadis.streamsets.pipeline.stage.stage.processor.image.recognition.config;
+package com.trivadis.streamsets.pipeline.stage.stage.processor.image.thumbnailer.config;
 
 import com.streamsets.pipeline.api.ConfigDef;
 import com.streamsets.pipeline.api.ValueChooserModel;
-import com.streamsets.pipeline.api.credential.CredentialValue;
 
 public class JobConfig {
     @ConfigDef(

@@ -1,3 +1,5 @@
+package com.trivadis.streamsets.pipeline.stage.stage.processor.image.thumbnailer;
+
 /*
  * Copyright 2017 StreamSets Inc.
  *
@@ -13,23 +15,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.trivadis.streamsets.pipeline.stage.stage.processor.image.recognition;
 
+import com.streamsets.pipeline.api.ErrorCode;
 import com.streamsets.pipeline.api.GenerateResourceBundle;
-import com.streamsets.pipeline.api.Label;
 
 @GenerateResourceBundle
-public enum Groups implements Label {
-    JOB("Job"),
-    ;
+public enum Errors implements ErrorCode {
+  CLARIFAI_REKOGNITION_01("error: {}"),
+  CLARIFAI_REKOGNITION_02("error: {}"),
+  CLARIFAI_REKOGNITION_03("Minimum probability threshold must be between 0 and 100"),
+  ;
 
-    private final String label;
+  private final String msg;
 
-    Groups(String label) {
-        this.label = label;
-    }
+  Errors(String msg) {
+    this.msg = msg;
+  }
 
-    public String getLabel() {
-        return label;
-    }
+  @Override
+  public String getCode() {
+    return name();
+  }
+
+  @Override
+  public String getMessage() {
+    return msg;
+  }
 }
+
