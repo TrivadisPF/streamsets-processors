@@ -20,11 +20,11 @@ public class TestExifTool {
 
     @Test
     public void testMetadata() {
-        File fileJpeg = new File("/Users/gus/workspace/git/trivadispf/streamsets-addons/image-metadata-processor-lib/src/test/test/image.jpg");
-        File filePng = new File("/Users/gus/workspace/git/trivadispf/streamsets-addons/image-metadata-processor-lib/src/test/test/image.png");
-        File fileTif = new File("/Users/gus/workspace/git/trivadispf/streamsets-addons/image-metadata-processor-lib/src/test/test/image.tif");
-        File fileGif = new File("/Users/gus/workspace/git/trivadispf/streamsets-addons/image-metadata-processor-lib/src/test/test/image.gif");
-        File fileBmp = new File("/Users/gus/workspace/git/trivadispf/streamsets-addons/image-metadata-processor-lib/src/test/test/image.bmp");
+        File fileJpeg = new File("/Users/gus/workspace/GitHub/trivadispf/streamsets-processors/image-metadata-processor-lib/src/test/test/image.jpg");
+        File filePng = new File("/Users/gus/workspace/GitHub/trivadispf/streamsets-processors/image-metadata-processor-lib/src/test/test/image.png");
+        File fileTif = new File("/Users/gus/workspace/GitHub/trivadispf/streamsets-processors/image-metadata-processor-lib/src/test/test/image.tif");
+        File fileGif = new File("/Users/gus/workspace/GitHub/trivadispf/streamsets-processors/image-metadata-processor-lib/src/test/test/image.gif");
+        File fileBmp = new File("/Users/gus/workspace/GitHub/trivadispf/streamsets-processors/image-metadata-processor-lib/src/test/test/image.bmp");
 
         StandardOptions opts = StandardOptions.builder().withHumanReadableFormat().withDateFormat("%Y.%m.%d %H:%M:%S").build();
 

@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.trivadis.streamsets.pipeline.stage.stage.processor.image.thumbnailer;
+package com.trivadis.streamsets.pipeline.stage.processor.image.thumbnailer;
 
 import com.streamsets.pipeline.api.*;
 import com.streamsets.pipeline.api.base.configurablestage.DProcessor;
-import com.trivadis.streamsets.pipeline.stage.stage.processor.image.thumbnailer.config.JobConfig;
+import com.trivadis.streamsets.pipeline.stage.processor.image.thumbnailer.config.JobConfig;
 
 @StageDef(
 		  version = 1,

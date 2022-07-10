@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.trivadis.streamsets.pipeline.stage.stage.processor.image.thumbnailer;
+package com.trivadis.streamsets.pipeline.stage.processor.image.thumbnailer;
 
 import com.streamsets.pipeline.api.GenerateResourceBundle;
 import com.streamsets.pipeline.api.Label;

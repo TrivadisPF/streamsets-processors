@@ -1,4 +1,4 @@
-package com.trivadis.streamsets.pipeline.stage.stage.processor.image.thumbnailer;
+package com.trivadis.streamsets.pipeline.stage.processor.image.thumbnailer;
 
 /*
  * Copyright 2017 StreamSets Inc.

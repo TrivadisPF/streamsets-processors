@@ -20,7 +20,6 @@ import com.streamsets.pipeline.api.*;
 import com.streamsets.pipeline.api.base.OnRecordErrorException;
 import com.streamsets.pipeline.api.base.SingleLaneRecordProcessor;
 import com.streamsets.pipeline.api.el.ELEval;
-import com.trivadis.streamsets.pipeline.lib.OutputFileRef;
 import com.trivadis.streamsets.pipeline.stage.processor.image.unpack.config.JobConfig;
 import com.trivadis.streamsets.pipeline.util.FileRefUtil;
 import org.slf4j.Logger;
@@ -78,13 +77,15 @@ public class UnpackProcessor extends SingleLaneRecordProcessor {
         // Get existing file's details
         String fileName = record.get("/fileInfo/filename").getValueAsString();
         FileRef fileRef = record.get("/fileRef").getValueAsFileRef();
+        List<Field> unpackedFiles = new ArrayList<>();
 
         try {
             validateRecord(record);
 
             // Read from incoming FileRef, write to output file
             try (InputStream is = fileRef.createInputStream(getContext(), InputStream.class)) {
-                File destDir = new File(jobConfig.outputDir);
+                String dest = record.get(jobConfig.outputDirField).getValueAsString();
+                File destDir = new File(dest);
                 byte[] buffer = new byte[1024];
                 ZipInputStream zis = new ZipInputStream(is);
                 ZipEntry zipEntry = zis.getNextEntry();
@@ -108,24 +109,21 @@ public class UnpackProcessor extends SingleLaneRecordProcessor {
                             fos.write(buffer, 0, len);
                         }
                         fos.close();
+                        newFile.setLastModified(zipEntry.getLastModifiedTime().toMillis());
 
-                        // Create a reference to an output file
-                        OutputFileRef outputFileRef;
-                        outputFileRef = new OutputFileRef("/tmp", newFile.getName());
-
-                        LinkedHashMap<String, Field> listMap = new LinkedHashMap<>();
-
-                        listMap.put("/fileRef", Field.create(outputFileRef));
-                        listMap.put("/fileInfo", com.trivadis.streamsets.pipeline.lib.FileRefUtil.createFieldForMetadata(getFileMetadata(newFile)));
-
-                        record.set(Field.createListMap(listMap));
-                        batchMaker.addRecord(record);
+                        unpackedFiles.add(Field.create(newFile.getPath()));
                     }
 
                     zipEntry = zis.getNextEntry();
                 }
 
+                if (jobConfig.removeWholeFile) {
+                    record.delete("/fileRef");
+                }
 
+                //record.set("UnpackedConntent", Field.create())
+                record.set(jobConfig.unpackedContentListField, Field.create(unpackedFiles));
+                batchMaker.addRecord(record);
 
             } catch (IOException e) {
                 e.printStackTrace();

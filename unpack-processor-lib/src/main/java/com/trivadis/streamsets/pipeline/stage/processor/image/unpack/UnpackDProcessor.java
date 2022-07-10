@@ -21,8 +21,8 @@ import com.trivadis.streamsets.pipeline.stage.processor.image.unpack.config.JobC
 
 @StageDef(
 		  version = 1,
-		  label = "Unarchiver",
-		  description = "Unarchive a whole file",
+		  label = "Unpacker",
+		  description = "Unpack a whole file",
 		  execution = { ExecutionMode.STANDALONE },
 		  icon = "unpack_processor.png",
 		  onlineHelpRefUrl =""

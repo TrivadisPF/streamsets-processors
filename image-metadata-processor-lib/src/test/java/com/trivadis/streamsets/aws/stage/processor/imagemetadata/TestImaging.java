@@ -25,11 +25,11 @@ public class TestImaging {
 
     @Test
     public void testGetMetadata() throws IOException, ImageReadException {
-        File fileJpeg = new File("/Users/gus/workspace/git/trivadispf/streamsets-addons/image-metadata-processor-lib/src/test/test/image.jpg");
-        File filePng = new File("/Users/gus/workspace/git/trivadispf/streamsets-addons/image-metadata-processor-lib/src/test/test/image.png");
-        File fileTif = new File("/Users/gus/workspace/git/trivadispf/streamsets-addons/image-metadata-processor-lib/src/test/test/image.tif");
-        File fileGif = new File("/Users/gus/workspace/git/trivadispf/streamsets-addons/image-metadata-processor-lib/src/test/test/image.gif");
-        File fileBmp = new File("/Users/gus/workspace/git/trivadispf/streamsets-addons/image-metadata-processor-lib/src/test/test/image.bmp");
+        File fileJpeg = new File("/Users/gus/workspace/GitHub/trivadispf/streamsets-processors/image-metadata-processor-lib/src/test/test/image.jpg");
+        File filePng = new File("/Users/gus/workspace/GitHub/trivadispf/streamsets-processors/image-metadata-processor-lib/src/test/test/image.png");
+        File fileTif = new File("/Users/gus/workspace/GitHub/trivadispf/streamsets-processors/image-metadata-processor-lib/src/test/test/image.tif");
+        File fileGif = new File("/Users/gus/workspace/GitHub/trivadispf/streamsets-processors/image-metadata-processor-lib/src/test/test/image.gif");
+        File fileBmp = new File("/Users/gus/workspace/GitHub/trivadispf/streamsets-processors/image-metadata-processor-lib/src/test/test/image.bmp");
         ImageMetadata metadata = Imaging.getMetadata(fileBmp);
 
         if (metadata instanceof JpegImageMetadata) {
@@ -65,7 +65,7 @@ public class TestImaging {
 
     @Test
     public void testGetMetadata2() throws IOException, ImageReadException {
-        File file = new File("/Users/gus/workspace/git/trivadispf/streamsets-addons/image-metadata-processor-lib/src/test/test/image.jpg");
+        File file = new File("/Users/gus/workspace/GitHub/trivadispf/streamsets-processors/image-metadata-processor-lib/src/test/test/image.jpg");
         ImageMetadata metadata = Imaging.getMetadata(file);
 
         final JpegImageMetadata jpegMetadata = (JpegImageMetadata) metadata;
@@ -88,7 +88,7 @@ public class TestImaging {
     @Test
     public void testGuessFormat() throws IOException, ImageReadException {
 
-        File file = new File("/Users/gus/workspace/git/trivadispf/streamsets-addons/image-metadata-processor-lib/src/test/test/image.jpg");
+        File file = new File("/Users/gus/workspace/GitHub/trivadispf/streamsets-processors/image-metadata-processor-lib/src/test/test/image.jpg");
 
         ImageFormat format = Imaging.guessFormat(file);
         System.out.println(format);
@@ -97,7 +97,7 @@ public class TestImaging {
     @Test
     public void testGetInfo() throws IOException, ImageReadException {
 
-        File file = new File("/Users/gus/workspace/git/trivadispf/streamsets-addons/image-metadata-processor-lib/src/test/test/image.jpg");
+        File file = new File("/Users/gus/workspace/GitHub/trivadispf/streamsets-processors/image-metadata-processor-lib/src/test/test/image.jpg");
         Map<String, Object> params = new HashMap<>();
         params.put(ImagingConstants.PARAM_KEY_FORMAT, ImageFormats.JPEG);
         ImageInfo info = Imaging.getImageInfo(file);

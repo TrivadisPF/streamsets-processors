@@ -3,7 +3,7 @@ package com.trivadis.streamsets.pipeline.stage.processor.image.unpack.config;
 import com.streamsets.pipeline.api.Label;
 
 public enum JobType implements Label {
-    CREATE_THUMBNAIL("Create Thumbnail for an Image"),
+    CREATE_THUMBNAIL("Unpack Content to local folder"),
     ;
 
     private final String label;

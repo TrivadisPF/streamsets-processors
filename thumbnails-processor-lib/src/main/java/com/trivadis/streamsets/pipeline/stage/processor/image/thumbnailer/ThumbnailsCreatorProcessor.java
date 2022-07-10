@@ -13,13 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.trivadis.streamsets.pipeline.stage.stage.processor.image.thumbnailer;
+package com.trivadis.streamsets.pipeline.stage.processor.image.thumbnailer;
 
-import com.streamsets.pipeline.api.*;
+import com.streamsets.pipeline.api.FileRef;
+import com.streamsets.pipeline.api.Processor;
+import com.streamsets.pipeline.api.Record;
+import com.streamsets.pipeline.api.Field;
+import com.streamsets.pipeline.api.StageException;
 import com.streamsets.pipeline.api.base.OnRecordErrorException;
 import com.streamsets.pipeline.api.base.SingleLaneRecordProcessor;
 import com.streamsets.pipeline.api.el.ELEval;
-import com.trivadis.streamsets.pipeline.stage.stage.processor.image.thumbnailer.config.JobConfig;
+import com.trivadis.streamsets.pipeline.stage.processor.image.thumbnailer.config.JobConfig;
 import com.trivadis.streamsets.pipeline.stage.util.FileRefUtil;
 import net.coobird.thumbnailator.Thumbnails;
 import org.slf4j.Logger;
@@ -35,8 +39,8 @@ import java.util.Map;
  * This executor is an example and does not actually perform any actions.
  */
 public class ThumbnailsCreatorProcessor extends SingleLaneRecordProcessor {
-
     private static final Logger LOG = LoggerFactory.getLogger(ThumbnailsCreatorProcessor.class);
+
     private final JobConfig jobConfig;
     private Processor.Context context;
 

@@ -20,13 +20,13 @@ public class JobConfig {
     @ConfigDef(
             required = true,
             type = ConfigDef.Type.STRING,
-            defaultValue = "/temp",
-            label = "Local Output Directory",
-            description = "Specify a local output directory where the unpacked content will be placed to",
+            defaultValue = "/destDir",
+            label = "Local Output Directory Field",
+            description = "Specify a field which holds the local output directory where the unpacked content will be placed to",
             group = "JOB",
             displayPosition = 60
     )
-    public String outputDir = "/temp";
+    public String outputDirField = "/destDir";
 
     @ConfigDef(
             required = true,
@@ -39,7 +39,19 @@ public class JobConfig {
             group = "JOB"
     )
     @ValueChooserModel(PackagingFormatChooserValues.class)
-    public PackagingFormat thumbnailFormat;
+    public PackagingFormat packagingFormat;
+
+
+    @ConfigDef(
+            required = true,
+            type = ConfigDef.Type.STRING,
+            defaultValue = "/unpackedContents",
+            label = "Unpacked Content List Field",
+            description = "Specify a field which will hold the list of unpacked content after the operation finished",
+            group = "JOB",
+            displayPosition = 70
+    )
+    public String unpackedContentListField = "/unpackedContents";
 
     @ConfigDef(
             required = true,

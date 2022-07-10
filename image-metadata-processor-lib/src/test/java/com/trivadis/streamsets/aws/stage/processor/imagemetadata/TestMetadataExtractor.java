@@ -26,12 +26,12 @@ public class TestMetadataExtractor {
 
     @Test
     public void testGetMetadata() throws IOException, ImageReadException, ImageProcessingException {
-        File fileJpeg = new File("/Users/gus/workspace/git/trivadispf/streamsets-addons/image-metadata-processor-lib/src/test/test/image.jpg");
-        File filePng = new File("/Users/gus/workspace/git/trivadispf/streamsets-addons/image-metadata-processor-lib/src/test/test/image.png");
-        File fileTif = new File("/Users/gus/workspace/git/trivadispf/streamsets-addons/image-metadata-processor-lib/src/test/test/image.tif");
-        File fileGif = new File("/Users/gus/workspace/git/trivadispf/streamsets-addons/image-metadata-processor-lib/src/test/test/image.gif");
-        File fileBmp = new File("/Users/gus/workspace/git/trivadispf/streamsets-addons/image-metadata-processor-lib/src/test/test/image.bmp");
-        File fileHeic = new File("/Users/gus/workspace/git/trivadispf/streamsets-addons/image-metadata-processor-lib/src/test/test/image.heic");
+        File fileJpeg = new File("/Users/gus/workspace/GitHub/trivadispf/streamsets-processors/image-metadata-processor-lib/src/test/test/image.jpg");
+        File filePng = new File("/Users/gus/workspace/GitHub/trivadispf/streamsets-processors/image-metadata-processor-lib/src/test/test/image.png");
+        File fileTif = new File("/Users/gus/workspace/GitHub/trivadispf/streamsets-processors/image-metadata-processor-lib/src/test/test/image.tif");
+        File fileGif = new File("//Users/gus/workspace/GitHub/trivadispf/streamsets-processors/image-metadata-processor-lib/src/test/test/image.gif");
+        File fileBmp = new File("/Users/gus/workspace/GitHub/trivadispf/streamsets-processors/image-metadata-processor-lib/src/test/test/image.bmp");
+        File fileHeic = new File("/Users/gus/workspace/GitHub/trivadispf/streamsets-processors/image-metadata-processor-lib/src/test/test/image.heic");
 
         Metadata metadata = ImageMetadataReader.readMetadata(fileJpeg);
         System.out.println(metadata.getDirectoryCount());
