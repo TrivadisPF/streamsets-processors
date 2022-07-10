@@ -19,17 +19,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.trivadis.streamsets.image.metadata</groupId>
-  <artifactId>thumbnails-processor-lib</artifactId>
-  <version>0.1.0</version>
+  <groupId>com.trivadis.streamsets.content.extractor</groupId>
+  <artifactId>document-content-processor-lib</artifactId>
+  <version>1.0.0</version>
 
-  <!--
-     We're using Guava 18.0 as that is used by the framework
-  -->
   <properties>
+    <tika.version>2.4.1</tika.version>
     <streamsets.version>3.22.3</streamsets.version>
-    <thumbnailator.version>0.4.17</thumbnailator.version>
-    <guava.version>18.0</guava.version>
     <slf4j.version>1.7.7</slf4j.version>
     <junit.version>4.12</junit.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -56,24 +52,19 @@
       <version>${slf4j.version}</version>
       <scope>provided</scope>
     </dependency>
+
     <dependency>
-      <groupId>com.streamsets</groupId>
-      <artifactId>streamsets-datacollector-sdk</artifactId>
-      <version>${streamsets.version}</version>
-      <scope>test</scope>
+      <groupId>org.apache.tika</groupId>
+      <artifactId>tika-core</artifactId>
+      <version>${tika.version}</version>
     </dependency>
 
     <dependency>
-      <groupId>net.coobird</groupId>
-      <artifactId>thumbnailator</artifactId>
-      <version>${thumbnailator.version}</version>
+      <groupId>org.apache.tika</groupId>
+      <artifactId>tika-parsers-standard-package</artifactId>
+      <version>${tika.version}</version>
     </dependency>
-
-    <dependency>
-      <groupId>com.google.guava</groupId>
-      <artifactId>guava</artifactId>
-      <version>${guava.version}</version>
-    </dependency>
+    <!-- end -->
 
     <!-- Test Dependencies -->
     <dependency>
@@ -82,7 +73,12 @@
       <version>${junit.version}</version>
       <scope>test</scope>
     </dependency>
-
+    <dependency>
+      <groupId>com.streamsets</groupId>
+      <artifactId>streamsets-datacollector-sdk</artifactId>
+      <version>${streamsets.version}</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>
